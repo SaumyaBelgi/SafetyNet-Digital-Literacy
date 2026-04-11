@@ -1,0 +1,113 @@
+/* Responsive overrides: minimal, targeted, non-invasive
+   Purpose: improve mobile display across pages without changing app logic.
+   These rules deliberately use !important only inside media queries
+   to override inline styles where necessary for small screens.
+*/
+
+:root {
+  --mobile-gutter: 12px;
+}
+
+/* Make SVGs and images scale down gracefully */
+svg, img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Small reductions for medium screens */
+@media (max-width: 1024px) {
+  nav {
+    padding: 10px 1rem !important;
+  }
+  section {
+    padding: 60px 1rem !important;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  html, body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Stack navbar content and reduce spacing */
+  nav {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    height: auto !important;
+    padding: 8px var(--mobile-gutter) !important;
+  }
+  nav > div {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+  nav a.nav-link {
+    font-size: 14px !important;
+    padding: 6px 8px !important;
+  }
+
+  /* Reduce hero/section paddings for phones */
+  section {
+    padding: 36px var(--mobile-gutter) !important;
+  }
+
+  /* Make primary CTAs and auth buttons stack full width on small screens */
+  .cta-primary,
+  .login-btn,
+  a.login-btn,
+  button.login-btn {
+    width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Force grid containers to a single column where needed */
+  /* These selectors are intentionally broad but only applied on small screens */
+  [style*="grid-template-columns"],
+  [style*="gridTemplateColumns"] ,
+  .grid, .features-grid, .feature-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tidy up large decorative absolutely-positioned elements */
+  [style*="width: 700px"],
+  [style*="width: 520px"],
+  [style*="width: 480px"],
+  [style*="width: 360px"],
+  [style*="width: 320px"] {
+    max-width: 90vw !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  /* Make companion cards center and not overflow */
+  .companion-card {
+    width: auto !important;
+    margin: 0 auto !important;
+  }
+
+  /* Reduce footer padding */
+  footer {
+    padding: 28px var(--mobile-gutter) 20px !important;
+  }
+
+  /* Small adjustments for progress bars and thin UI lines */
+  [style*="height: 8px"],
+  [style*="height: '8px'"],
+  [style*="height: \"8px\""] {
+    height: 6px !important;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 400px) {
+  body { font-size: 14px; }
+  nav a.nav-link { font-size: 13px !important; }
+  .display-font { font-size: 1rem !important; }
+}
