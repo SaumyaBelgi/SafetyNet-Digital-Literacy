@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import { useUnlockOnMount } from "../components/ui/Usebadges";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Screen = 'learn' | 'game' | 'results';
+type Screen = "learn" | "game" | "results";
 
 interface Technique {
   emoji: string;
@@ -24,49 +24,54 @@ interface Pair {
 
 const TECHNIQUES: Technique[] = [
   {
-    emoji: '🖐️',
-    title: 'Unusual Hands & Fingers',
-    desc: 'AI image generators have long struggled to render hands correctly. The geometry of fingers — five per hand, each with three joints, always bending in anatomically possible directions — is surprisingly complex for a neural network to learn consistently.',
-    lookFor: '<strong>👀 What to look for:</strong> Six or more fingers on one hand · Fused or melted-together digits · Fingers that are too long, too short, or bend the wrong way · Extra "ghost" fingers visible at the edge of the frame.',
-    images: ['assets/01_i.png', 'assets/02_i.png', 'assets/03_i.png'],
+    emoji: "🖐️",
+    title: "Unusual Hands & Fingers",
+    desc: "AI image generators have long struggled to render hands correctly. The geometry of fingers — five per hand, each with three joints, always bending in anatomically possible directions — is surprisingly complex for a neural network to learn consistently.",
+    lookFor:
+      '<strong>👀 What to look for:</strong> Six or more fingers on one hand · Fused or melted-together digits · Fingers that are too long, too short, or bend the wrong way · Extra "ghost" fingers visible at the edge of the frame.',
+    images: ["/assets/01_i.png", "/assets/02_i.png", "/assets/03_i.png"],
   },
   {
-    emoji: '💡',
-    title: 'Mismatched Lighting & Shadows',
-    desc: 'In a real photograph, every shadow and highlight follows a single, consistent light source — the sun, a window, a lamp. AI images often stitch together elements with subtly different lighting, so a face might be lit from the left while the background is lit from the right.',
-    lookFor: '<strong>👀 What to look for:</strong> Shadows pointing in different directions · Unnaturally bright or glowing skin · The subject looking "pasted in" against the background · Reflections in eyes that do not match the scene lighting.',
-    images: ['assets/04_i.png', 'assets/05_i.png', 'assets/06_i.png'],
+    emoji: "💡",
+    title: "Mismatched Lighting & Shadows",
+    desc: "In a real photograph, every shadow and highlight follows a single, consistent light source — the sun, a window, a lamp. AI images often stitch together elements with subtly different lighting, so a face might be lit from the left while the background is lit from the right.",
+    lookFor:
+      '<strong>👀 What to look for:</strong> Shadows pointing in different directions · Unnaturally bright or glowing skin · The subject looking "pasted in" against the background · Reflections in eyes that do not match the scene lighting.',
+    images: ["/assets/04_i.png", "/assets/05_i.png", "/assets/06_i.png"],
   },
   {
-    emoji: '🔤',
-    title: 'Blurry or Garbled Text',
-    desc: 'Text is one of the most reliable deepfake tells. AI generators cannot read or write — they predict visually plausible patterns. Any text visible in the scene — on a sign, a t-shirt, a book cover — will be a meaningless jumble of letter-like shapes.',
-    lookFor: '<strong>👀 What to look for:</strong> Background signs with nonsense letters · Brand logos that are almost-but-not-quite correct · Clothing with text that blurs into scribbles · Clock faces with impossible or scrambled numbers.',
-    images: ['assets/07_i.png', 'assets/08_i.png', 'assets/09_i.png'],
+    emoji: "🔤",
+    title: "Blurry or Garbled Text",
+    desc: "Text is one of the most reliable deepfake tells. AI generators cannot read or write — they predict visually plausible patterns. Any text visible in the scene — on a sign, a t-shirt, a book cover — will be a meaningless jumble of letter-like shapes.",
+    lookFor:
+      "<strong>👀 What to look for:</strong> Background signs with nonsense letters · Brand logos that are almost-but-not-quite correct · Clothing with text that blurs into scribbles · Clock faces with impossible or scrambled numbers.",
+    images: ["/assets/07_i.png", "/assets/08_i.png", "/assets/09_i.png"],
   },
   {
-    emoji: '👁️',
-    title: 'Asymmetrical Features',
-    desc: 'Human faces are roughly symmetrical — our eyes, ears, and eyebrows broadly mirror each other. AI generation introduces subtle but detectable asymmetries: one eye higher, a drooping pupil, earrings that do not match, or eyebrows of different thickness.',
-    lookFor: '<strong>👀 What to look for:</strong> One eye noticeably higher or lower than the other · Pupils of different sizes or angles · Earrings that are different shapes · Eyebrows with different thicknesses · A hairline that shifts unevenly.',
-    images: ['assets/10_i.png', 'assets/11_i.png', 'assets/12_i.png'],
+    emoji: "👁️",
+    title: "Asymmetrical Features",
+    desc: "Human faces are roughly symmetrical — our eyes, ears, and eyebrows broadly mirror each other. AI generation introduces subtle but detectable asymmetries: one eye higher, a drooping pupil, earrings that do not match, or eyebrows of different thickness.",
+    lookFor:
+      "<strong>👀 What to look for:</strong> One eye noticeably higher or lower than the other · Pupils of different sizes or angles · Earrings that are different shapes · Eyebrows with different thicknesses · A hairline that shifts unevenly.",
+    images: ["/assets/10_i.png", "/assets/11_i.png", "/assets/12_i.png"],
   },
   {
-    emoji: '✨',
-    title: 'Overly Polished Skin & Textures',
+    emoji: "✨",
+    title: "Overly Polished Skin & Textures",
     desc: 'Real human skin has pores, fine hairs, tiny blemishes, and subtle colour variation. AI tends to over-smooth, producing a "plastic doll" quality — particularly on the face and neck. Fabric weave, hair strands, and surfaces can also appear unnaturally uniform or repetitive.',
-    lookFor: '<strong>👀 What to look for:</strong> Skin that looks airbrushed or waxy with no pores · Hair that clumps into perfectly identical strands · Fabric with a strange repeating texture · No visible freckles, blemishes, or normal skin detail · Background surfaces that tile or repeat.',
-    images: ['assets/13_i.png', 'assets/14_i.png', 'assets/15_i.png'],
+    lookFor:
+      "<strong>👀 What to look for:</strong> Skin that looks airbrushed or waxy with no pores · Hair that clumps into perfectly identical strands · Fabric with a strange repeating texture · No visible freckles, blemishes, or normal skin detail · Background surfaces that tile or repeat.",
+    images: ["/assets/13_i.png", "/assets/14_i.png", "/assets/15_i.png"],
   },
 ];
 
 const ALL_PAIRS: Pair[] = Array.from({ length: 18 }, (_, i) => {
-  const id = String(i + 1).padStart(2, '0');
+  const id = String(i + 1).padStart(2, "0");
   return {
     id,
-    real: `assets/${id}.png`,
-    fake: `assets/${id}_d.png`,
-    explanation: `assets/${id}_exp.png`,
+    real: `/assets/${id}.png`,
+    fake: `/assets/${id}_d.png`,
+    explanation: `/assets/${id}_exp.png`,
   };
 });
 
@@ -856,11 +861,11 @@ const CSS = `
 export default function DeepfakeRecognitionLab(): React.ReactElement {
   // ── Global screen state ──
   useUnlockOnMount("/deepfake-lab");
-  const [screen, setScreen] = useState<Screen>('learn');
+  const [screen, setScreen] = useState<Screen>("learn");
 
   // ── Learn state ──
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slideAnimDir, setSlideAnimDir] = useState<'right' | 'left'>('right');
+  const [slideAnimDir, setSlideAnimDir] = useState<"right" | "left">("right");
   const [slideKey, setSlideKey] = useState(0);
 
   // ── Game state ──
@@ -873,32 +878,43 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCorrect, setModalCorrect] = useState(false);
   const [statValue, setStatValue] = useState(73);
-  const [statMessage, setStatMessage] = useState('of people found this pair difficult to judge.');
+  const [statMessage, setStatMessage] = useState(
+    "of people found this pair difficult to judge.",
+  );
   const [expImgVisible, setExpImgVisible] = useState(true);
 
   // ── Results state ──
   const [resultsData, setResultsData] = useState<{
-    emoji: string; heading: string; message: string;
-  }>({ emoji: '🏆', heading: '', message: '' });
+    emoji: string;
+    heading: string;
+    message: string;
+  }>({ emoji: "🏆", heading: "", message: "" });
 
   // ── Lightbox state ──
-  const [lightboxSrc, setLightboxSrc] = useState('');
+  const [lightboxSrc, setLightboxSrc] = useState("");
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   // ── Slide navigation ──
-  const goToSlide = useCallback((targetIndex: number, dir?: number) => {
-    if (targetIndex === currentSlide) return;
-    const direction = dir !== undefined ? dir : (targetIndex > currentSlide ? 1 : -1);
-    setSlideAnimDir(direction > 0 ? 'right' : 'left');
-    setSlideKey(k => k + 1);
-    setCurrentSlide(targetIndex);
-  }, [currentSlide]);
+  const goToSlide = useCallback(
+    (targetIndex: number, dir?: number) => {
+      if (targetIndex === currentSlide) return;
+      const direction =
+        dir !== undefined ? dir : targetIndex > currentSlide ? 1 : -1;
+      setSlideAnimDir(direction > 0 ? "right" : "left");
+      setSlideKey((k) => k + 1);
+      setCurrentSlide(targetIndex);
+    },
+    [currentSlide],
+  );
 
-  const changeSlide = useCallback((direction: number) => {
-    const next = currentSlide + direction;
-    if (next < 0 || next >= TECHNIQUES.length) return;
-    goToSlide(next, direction);
-  }, [currentSlide, goToSlide]);
+  const changeSlide = useCallback(
+    (direction: number) => {
+      const next = currentSlide + direction;
+      if (next < 0 || next >= TECHNIQUES.length) return;
+      goToSlide(next, direction);
+    },
+    [currentSlide, goToSlide],
+  );
 
   // ── Start game ──
   const startGame = useCallback(() => {
@@ -906,38 +922,43 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
     setSessionPairs(pairs);
     setCurrentRound(0);
     setScore(0);
-    setScreen('game');
+    setScreen("game");
     setFakeIsOnLeft(Math.random() < 0.5);
   }, []);
 
   // ── Handle choice ──
-  const handleChoice = useCallback((userClickedLeft: boolean) => {
-    if (modalOpen) return;
-    const isCorrect = userClickedLeft === fakeIsOnLeft;
-    const newScore = isCorrect ? score + 1 : score;
-    if (isCorrect) setScore(s => s + 1);
+  const handleChoice = useCallback(
+    (userClickedLeft: boolean) => {
+      if (modalOpen) return;
+      const isCorrect = userClickedLeft === fakeIsOnLeft;
+      const newScore = isCorrect ? score + 1 : score;
+      if (isCorrect) setScore((s) => s + 1);
 
-    const sv = Math.floor(Math.random() * (95 - 60 + 1)) + 60;
-    const statMessages = [
-      'of people found this pair difficult to judge.',
-      'of visitors needed more than one look at this pair.',
-      'of players got this one wrong on their first try.',
-      'of people struggled to tell these two apart.',
-    ];
-    setStatValue(sv);
-    setStatMessage(statMessages[Math.floor(Math.random() * statMessages.length)]);
-    setModalCorrect(isCorrect);
-    setExpImgVisible(true);
-    setModalOpen(true);
-    void newScore;
-  }, [fakeIsOnLeft, score, modalOpen]);
+      const sv = Math.floor(Math.random() * (95 - 60 + 1)) + 60;
+      const statMessages = [
+        "of people found this pair difficult to judge.",
+        "of visitors needed more than one look at this pair.",
+        "of players got this one wrong on their first try.",
+        "of people struggled to tell these two apart.",
+      ];
+      setStatValue(sv);
+      setStatMessage(
+        statMessages[Math.floor(Math.random() * statMessages.length)],
+      );
+      setModalCorrect(isCorrect);
+      setExpImgVisible(true);
+      setModalOpen(true);
+      void newScore;
+    },
+    [fakeIsOnLeft, score, modalOpen],
+  );
 
   // ── Next round ──
   const nextRound = useCallback(() => {
     setModalOpen(false);
     const nextRoundIndex = currentRound + 1;
     if (nextRoundIndex >= TOTAL_ROUNDS) {
-      setScreen('results');
+      setScreen("results");
     } else {
       setCurrentRound(nextRoundIndex);
       setFakeIsOnLeft(Math.random() < 0.5);
@@ -947,9 +968,9 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
   // ── Show learn screen ──
   const showLearnScreen = useCallback(() => {
     setCurrentSlide(0);
-    setSlideKey(k => k + 1);
-    setSlideAnimDir('right');
-    setScreen('learn');
+    setSlideKey((k) => k + 1);
+    setSlideAnimDir("right");
+    setScreen("learn");
     window.scrollTo({ top: 0 });
   }, []);
 
@@ -971,23 +992,33 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
 
   // ── Results computation ──
   useEffect(() => {
-    if (screen === 'results') {
+    if (screen === "results") {
       let emoji: string, heading: string, message: string;
       if (score === TOTAL_ROUNDS) {
-        emoji = '🏆'; heading = 'Perfect Score!';
-        message = 'Outstanding! You identified every single fake. You have a truly sharp eye — share this lab with friends and family to help keep them safe online.';
+        emoji = "🏆";
+        heading = "Perfect Score!";
+        message =
+          "Outstanding! You identified every single fake. You have a truly sharp eye — share this lab with friends and family to help keep them safe online.";
       } else if (score >= 4) {
-        emoji = '🥇'; heading = 'Brilliant Work!';
-        message = "You got almost all of them! Just one slipped past you — that's impressive for a first session. Your digital literacy skills are growing fast.";
+        emoji = "🥇";
+        heading = "Brilliant Work!";
+        message =
+          "You got almost all of them! Just one slipped past you — that's impressive for a first session. Your digital literacy skills are growing fast.";
       } else if (score >= 3) {
-        emoji = '👏'; heading = 'Well Done!';
-        message = "A solid result! You're developing a real instinct for spotting AI-generated images. Play again and see if you can beat your score.";
+        emoji = "👏";
+        heading = "Well Done!";
+        message =
+          "A solid result! You're developing a real instinct for spotting AI-generated images. Play again and see if you can beat your score.";
       } else if (score >= 2) {
-        emoji = '💪'; heading = 'Good Start!';
-        message = "Deepfakes are genuinely tricky — even experts get fooled. Review the techniques and try again. You'll improve quickly.";
+        emoji = "💪";
+        heading = "Good Start!";
+        message =
+          "Deepfakes are genuinely tricky — even experts get fooled. Review the techniques and try again. You'll improve quickly.";
       } else {
-        emoji = '🌱'; heading = 'Keep Practising!';
-        message = "These images were tough, and you're just getting started. Every attempt trains your brain. Review the techniques and give it another go!";
+        emoji = "🌱";
+        heading = "Keep Practising!";
+        message =
+          "These images were tough, and you're just getting started. Every attempt trains your brain. Review the techniques and give it another go!";
       }
       setResultsData({ emoji, heading, message });
     }
@@ -996,28 +1027,41 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
   // ── Keyboard handlers ──
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (lightboxOpen) { closeLightbox(); return; }
-        if (modalOpen) { nextRound(); return; }
+      if (e.key === "Escape") {
+        if (lightboxOpen) {
+          closeLightbox();
+          return;
+        }
+        if (modalOpen) {
+          nextRound();
+          return;
+        }
       }
-      if (screen === 'learn') {
-        if (e.key === 'ArrowRight') changeSlide(1);
-        if (e.key === 'ArrowLeft')  changeSlide(-1);
+      if (screen === "learn") {
+        if (e.key === "ArrowRight") changeSlide(1);
+        if (e.key === "ArrowLeft") changeSlide(-1);
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [screen, lightboxOpen, modalOpen, closeLightbox, nextRound, changeSlide]);
 
   // ── Current pair ──
   const currentPair = sessionPairs[currentRound];
 
-  const leftSrc  = currentPair ? (fakeIsOnLeft ? currentPair.fake : currentPair.real) : '';
-  const rightSrc = currentPair ? (fakeIsOnLeft ? currentPair.real : currentPair.fake) : '';
+  const leftSrc = currentPair
+    ? fakeIsOnLeft
+      ? currentPair.fake
+      : currentPair.real
+    : "";
+  const rightSrc = currentPair
+    ? fakeIsOnLeft
+      ? currentPair.real
+      : currentPair.fake
+    : "";
 
-  const progressPct = screen === 'results'
-    ? 100
-    : (currentRound / TOTAL_ROUNDS) * 100;
+  const progressPct =
+    screen === "results" ? 100 : (currentRound / TOTAL_ROUNDS) * 100;
 
   const isLastSlide = currentSlide === TECHNIQUES.length - 1;
   const tech = TECHNIQUES[currentSlide];
@@ -1031,13 +1075,23 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
       {/* ── Lightbox ── */}
       {lightboxOpen && (
         <div className="drl-lightbox-backdrop" onClick={closeLightbox}>
-          <div className="drl-lightbox-content" onClick={e => e.stopPropagation()}>
+          <div
+            className="drl-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="drl-lightbox-close"
               onClick={closeLightbox}
               aria-label="Close enlarged image"
-            >×</button>
-            <img src={lightboxSrc} id="lightbox-img" className="drl-lightbox-img" alt="Enlarged view" />
+            >
+              ×
+            </button>
+            <img
+              src={lightboxSrc}
+              id="lightbox-img"
+              className="drl-lightbox-img"
+              alt="Enlarged view"
+            />
           </div>
         </div>
       )}
@@ -1045,9 +1099,8 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
       {/* ════════════════════════════════════════════
           SCREEN 1 — LEARN
           ════════════════════════════════════════════ */}
-      {screen === 'learn' && (
+      {screen === "learn" && (
         <div className="drl-learn-screen">
-
           {/* Sticky header */}
           <div className="drl-learn-header">
             <span className="drl-learn-brand">🔬 Deepfake Recognition Lab</span>
@@ -1061,11 +1114,17 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
           </div>
 
           {/* Pill dots */}
-          <div className="drl-slide-dots" role="tablist" aria-label="Technique navigation dots">
+          <div
+            className="drl-slide-dots"
+            role="tablist"
+            aria-label="Technique navigation dots"
+          >
             {TECHNIQUES.map((t, i) => (
               <button
                 key={i}
-                className={'drl-slide-dot' + (i === currentSlide ? ' active' : '')}
+                className={
+                  "drl-slide-dot" + (i === currentSlide ? " active" : "")
+                }
                 role="tab"
                 aria-label={`Go to technique ${i + 1}: ${t.title}`}
                 aria-selected={i === currentSlide}
@@ -1082,7 +1141,7 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
           <div className="drl-slide-stage">
             <div
               key={slideKey}
-              className={`drl-technique-slide${slideAnimDir === 'left' ? ' from-left' : ''}`}
+              className={`drl-technique-slide${slideAnimDir === "left" ? " from-left" : ""}`}
             >
               <div className="drl-slide-inner">
                 <div className="drl-technique-title-row">
@@ -1094,7 +1153,9 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                   className="drl-look-for-box"
                   dangerouslySetInnerHTML={{ __html: tech.lookFor }}
                 />
-                <p className="drl-example-label">📸 Real Examples — Click any image to enlarge</p>
+                <p className="drl-example-label">
+                  📸 Real Examples — Click any image to enlarge
+                </p>
                 <div className="drl-technique-images">
                   {tech.images.map((src, j) => (
                     <div
@@ -1104,8 +1165,8 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                       role="button"
                       tabIndex={0}
                       aria-label={`Example ${j + 1}: ${tech.title} — click to enlarge`}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                           openLightbox(src);
                         }
@@ -1115,12 +1176,16 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                         src={src}
                         alt={`Example ${j + 1} for ${tech.title}`}
                         loading="lazy"
-                        onError={e => {
-                          const wrap = (e.target as HTMLImageElement).parentElement;
-                          if (wrap) wrap.innerHTML = `<div class="drl-img-placeholder">Example ${j + 1}</div>`;
+                        onError={(e) => {
+                          const wrap = (e.target as HTMLImageElement)
+                            .parentElement;
+                          if (wrap)
+                            wrap.innerHTML = `<div class="drl-img-placeholder">Example ${j + 1}</div>`;
                         }}
                       />
-                      <span className="drl-example-expand-hint">🔍 Enlarge</span>
+                      <span className="drl-example-expand-hint">
+                        🔍 Enlarge
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -1161,16 +1226,14 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
               )}
             </div>
           </div>
-
         </div>
       )}
 
       {/* ════════════════════════════════════════════
           SCREEN 2 — GAME
           ════════════════════════════════════════════ */}
-      {screen === 'game' && (
+      {screen === "game" && (
         <div className="drl-game-screen">
-
           {/* Top bar */}
           <div className="drl-top-bar">
             <span className="drl-brand">🔬 Deepfake Lab</span>
@@ -1194,19 +1257,29 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
           </div>
 
           <p className="drl-question-label">
-            Which image is <span className="drl-question-accent">AI-generated (fake)?</span><br />
-            <small style={{ fontFamily: "'Source Sans 3', sans-serif", fontSize: 14, fontWeight: 400, color: '#a09888' }}>
-              Hover over an image to zoom in, then click the one you think is fake.
+            Which image is{" "}
+            <span className="drl-question-accent">AI-generated (fake)?</span>
+            <br />
+            <small
+              style={{
+                fontFamily: "'Source Sans 3', sans-serif",
+                fontSize: 14,
+                fontWeight: 400,
+                color: "#a09888",
+              }}
+            >
+              Hover over an image to zoom in, then click the one you think is
+              fake.
             </small>
           </p>
 
           {currentPair && (
             <div className="drl-image-pair">
               {/* Image A (left) */}
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <button
                   className="drl-maximize-btn"
-                  onClick={e => openLightbox(leftSrc, e)}
+                  onClick={(e) => openLightbox(leftSrc, e)}
                   aria-label="Expand Image A to full screen"
                 >
                   🔍 Expand
@@ -1220,9 +1293,10 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                     src={leftSrc}
                     alt="Image option A"
                     loading="lazy"
-                    onError={e => {
+                    onError={(e) => {
                       const el = e.target as HTMLImageElement;
-                      el.parentElement!.innerHTML = '<div class="drl-img-placeholder">Image A</div>';
+                      el.parentElement!.innerHTML =
+                        '<div class="drl-img-placeholder">Image A</div>';
                     }}
                   />
                   <span className="drl-choice-label">A</span>
@@ -1230,10 +1304,10 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
               </div>
 
               {/* Image B (right) */}
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <button
                   className="drl-maximize-btn"
-                  onClick={e => openLightbox(rightSrc, e)}
+                  onClick={(e) => openLightbox(rightSrc, e)}
                   aria-label="Expand Image B to full screen"
                 >
                   🔍 Expand
@@ -1247,9 +1321,10 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                     src={rightSrc}
                     alt="Image option B"
                     loading="lazy"
-                    onError={e => {
+                    onError={(e) => {
                       const el = e.target as HTMLImageElement;
-                      el.parentElement!.innerHTML = '<div class="drl-img-placeholder">Image B</div>';
+                      el.parentElement!.innerHTML =
+                        '<div class="drl-img-placeholder">Image B</div>';
                     }}
                   />
                   <span className="drl-choice-label">B</span>
@@ -1258,7 +1333,9 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
             </div>
           )}
 
-          <p className="drl-tap-hint">📱 On a phone? Long-press an image to zoom in.</p>
+          <p className="drl-tap-hint">
+            📱 On a phone? Long-press an image to zoom in.
+          </p>
 
           {/* ── Feedback Modal ── */}
           {modalOpen && (
@@ -1267,26 +1344,29 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-title"
-              onClick={e => { if (e.target === e.currentTarget) nextRound(); }}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) nextRound();
+              }}
             >
               <div className="drl-modal-box">
-
                 {/* Result banner */}
-                <div className={`drl-modal-result-banner ${modalCorrect ? 'correct' : 'wrong'}`}>
+                <div
+                  className={`drl-modal-result-banner ${modalCorrect ? "correct" : "wrong"}`}
+                >
                   <span className="drl-result-icon">
-                    {modalCorrect ? '✅' : '💛'}
+                    {modalCorrect ? "✅" : "💛"}
                   </span>
                   <div>
                     <div
                       id="modal-title"
-                      className={`drl-result-title ${modalCorrect ? 'correct' : 'wrong'}`}
+                      className={`drl-result-title ${modalCorrect ? "correct" : "wrong"}`}
                     >
-                      {modalCorrect ? 'Excellent!' : 'Not quite!'}
+                      {modalCorrect ? "Excellent!" : "Not quite!"}
                     </div>
                     <div className="drl-result-desc">
                       {modalCorrect
-                        ? 'You spotted the AI-generated image. Your eye for detail is sharp!'
-                        : 'That was a tricky one. Each miss is a step closer to becoming an expert!'}
+                        ? "You spotted the AI-generated image. Your eye for detail is sharp!"
+                        : "That was a tricky one. Each miss is a step closer to becoming an expert!"}
                     </div>
                   </div>
                 </div>
@@ -1295,12 +1375,21 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                 {expImgVisible && currentPair && (
                   <div
                     className="drl-modal-explanation-wrap"
-                    onClick={e => openLightbox((document.getElementById('drl-exp-img') as HTMLImageElement)?.src || currentPair.explanation, e)}
+                    onClick={(e) =>
+                      openLightbox(
+                        (
+                          document.getElementById(
+                            "drl-exp-img",
+                          ) as HTMLImageElement
+                        )?.src || currentPair.explanation,
+                        e,
+                      )
+                    }
                     role="button"
                     tabIndex={0}
                     aria-label="Explanation image — click to enlarge"
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         openLightbox(currentPair.explanation);
                       }
@@ -1337,24 +1426,23 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
                 >
                   Next Image →
                 </button>
-
               </div>
             </div>
           )}
-
         </div>
       )}
 
       {/* ════════════════════════════════════════════
           SCREEN 3 — RESULTS
           ════════════════════════════════════════════ */}
-      {screen === 'results' && (
+      {screen === "results" && (
         <div className="drl-results-screen">
           <div className="drl-results-card">
             <span className="drl-trophy">{resultsData.emoji}</span>
             <h2>{resultsData.heading}</h2>
             <div className="drl-score-display">
-              {score}<span> / {TOTAL_ROUNDS}</span>
+              {score}
+              <span> / {TOTAL_ROUNDS}</span>
             </div>
             <p className="drl-results-message">{resultsData.message}</p>
             <button
@@ -1363,7 +1451,8 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
             >
               🔄 Play Again
             </button>
-            <br /><br />
+            <br />
+            <br />
             <button
               className="drl-btn drl-btn-outline drl-btn-full"
               onClick={showLearnScreen}
@@ -1373,7 +1462,6 @@ export default function DeepfakeRecognitionLab(): React.ReactElement {
           </div>
         </div>
       )}
-
     </div>
   );
 }
