@@ -1,6 +1,6 @@
-# 🛡️ Guardian Path
+# 🛡️ Safety Net
 
-Guardian Path is an AI-powered cybersecurity awareness platform that helps users recognize and defend against online scams through realistic AI-driven conversations, interactive learning modules, and a voice-guided assistant.
+SafetyNet is an AI-powered cybersecurity awareness platform that helps users recognize and defend against online scams through realistic AI-driven conversations, interactive learning modules, and a voice-guided assistant.
 
 ---
 
